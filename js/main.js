@@ -1,50 +1,63 @@
 function Controller($scope) {
   $scope.person = {};
   $scope.persons = [];
+  $scope.oddPayments = [];
   $scope.payments = [];
   $scope.positions = {};
   $scope.adjustments = [];
   $scope.step0 = false;
-  $scope.step1 = $scope.step2 = $scope.step3 = true;
+  $scope.step1 = $scope.step2 = true;
 
-  $scope.initPersons = function() {
+  $scope.initPersons = function () {
+    
     $scope.Okke = new Person('Okke', '369');
     $scope.Esther = new Person('Esther', '125');
     $scope.Guido = new Person('Guido', '30');
     $scope.Chawa = new Person('Chawa', '0');
     $scope.Paul = new Person('Paul', '0');
-    $scope.Trudy =  new Person('Trudy', '50');
-    $scope.Astrid =  new Person('Astrid', '0');
+    $scope.Trudy = new Person('Trudy', '50');
+    $scope.Astrid = new Person('Astrid', '0');
     $scope.Roel = new Person('Roel', '127');
     $scope.persons = [$scope.Okke, $scope.Esther, $scope.Guido, $scope.Chawa, $scope.Paul, $scope.Trudy, $scope.Astrid, $scope.Roel];
-    $scope.step0 = true;
-    $scope.step1 = false;
-  }
 
-  $scope.adjustDeviatingPositions = function () {
     /*
      * Okke -50 Esther +50
      * All but Guido (-60 / 7) Esther +60
      * Astrid -12 Esther +12
      */
-    singlePayment($scope.Esther, [$scope.Okke], new Money('50'));
-    singlePayment($scope.Esther, [$scope.Astrid], new Money('12'));
+    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Okke], what: new Money('50') });
+    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Astrid], what: new Money('12') });
     var allButGuido = _.filter($scope.persons, function (person) {
       return person.name !== 'Guido';
     });
-    singlePayment($scope.Esther, allButGuido, new Money((60 / allButGuido.length).toFixed(2)));
-    $scope.step2 = true;
-    $scope.step3 = false;
+    $scope.oddPayments.push( { from: $scope.Esther, to: allButGuido, what: new Money((60 / allButGuido.length).toFixed(2)) });
+
+    $scope.step0 = true;
+    $scope.step1 = false;
   }
 
+  var adjustDeviatingPositions = function () {
+    _.each($scope.oddPayments, function(oddPayment){
+      singlePayment(oddPayment.from, oddPayment.to, oddPayment.what);
+    });
+  }
+
+  var singlePayment = function (creditor, debtors, amount) {
+    _.each(debtors, function (debtor) {
+      debtor.adjustPosition(amount, true);
+      $scope.adjustments.push({ from: debtor.name, to: creditor.name, amount: Math.abs(amount.format())});
+    });
+    creditor.adjustPosition(amount.multiple(debtors.length), false);
+  }
 
   var aggregatePositions = function () {
-    return _.reduce($scope.persons, function (positions, person) {
+    var pos = _.reduce($scope.persons, function (positions, person) {
         positions.totalCredit += person.isPositionPositive() ? person.position.amount : 0;
         positions.totalDebit -= person.isPositionNegative() ? person.position.amount : 0;
         return positions;
       },
       { totalCredit: 0, totalDebit: 0});
+    return { totalCredit: (pos.totalCredit / 100).toFixed(2), totalDebit: (pos.totalDebit / 100).toFixed(2)}
   }
 
   var resetPositions = function () {
@@ -76,14 +89,6 @@ function Controller($scope) {
     debtor.adjustPosition(minMoney, false);
   }
 
-  var singlePayment = function(creditor, debtors, amount) {
-    _.each(debtors, function(debtor){
-      debtor.adjustPosition(amount, true);
-      $scope.adjustments.push({ from: debtor.name, to: creditor.name, amount: Math.abs(amount.format())});
-    });
-    creditor.adjustPosition(amount, false);
-  }
-
   $scope.add = function (person) {
     $scope.persons.push(new Person(person.name, person.contribution));
     $scope.person = {};
@@ -99,6 +104,7 @@ function Controller($scope) {
       });
     });
     $scope.persons = persons.value();
+    adjustDeviatingPositions();
     $scope.positions = aggregatePositions();
     $scope.step1 = true;
     $scope.step2 = false;

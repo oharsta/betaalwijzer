@@ -1,42 +1,53 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body ng-app="">
 <div ng-controller="Controller">
   <form novalidate class="simple-form">
-    <!--Name: <input type="text" ng-model="person.name"/><br/>-->
-    <!--Contribution: <input type="text" ng-model="person.contribution"/><br/>-->
 
     <button ng-disabled="step0" ng-click="initPersons()">Init</button>
 
     <button ng-disabled="step1" ng-click="crunch()">Positions</button>
 
-    <button ng-disabled="step2" ng-click="adjustDeviatingPositions()">Adjustments</button>
-
-    <button ng-disabled="step3" ng-click="doPayments()">Payments</button>
+    <button ng-disabled="step2" ng-click="doPayments()">Payments</button>
 
   </form>
 
-  <pre>payments = </pre>
+  <pre>final payments = </pre>
   <pre ng-repeat="payment in payments">
     creditor: {{payment.creditor}}, debtor: {{payment.debtor}}, amount: &#8364;{{payment.amount.amountFormatted}}
   </pre>
 
-  <pre>position adjustments = </pre>
-  <pre ng-repeat="adjustment in adjustments">
-    from: {{adjustment.from}}, to: {{adjustment.to}}, amount: &#8364;{{adjustment.amount}}
+  <pre>final positions (rounding differences do occur) = </pre>
+  <pre ng-show="step1 && step0">
+    totalCredit = &#8364; {{positions.totalCredit}}
+  </pre>
+  <pre ng-show="step1 && step0">
+    totalDebit = &#8364; {{positions.totalDebit}}
+  </pre>
+  <pre></pre>
+  <pre ng-show="step1 && step0" ng-repeat="person in persons" >
+    name: {{person.name}}, position: &#8364; {{person.position.amountFormatted}}
   </pre>
 
-  <pre>positions = </pre>
-  <pre ng-repeat="person in persons" ng-show="step1">
-    name: {{person.name}}, position: &#8364; {{person.position.amountFormatted}}
+  <pre>position adjustments from individual / excluded person contributions = </pre>
+  <pre ng-repeat="adjustment in adjustments">
+    from: {{adjustment.from}}, to: {{adjustment.to}}, amount: &#8364;{{adjustment.amount}}
   </pre>
 
   <pre>persons = </pre>
   <pre ng-repeat="person in persons">
     name: {{person.name}}, contribution: &#8364; {{person.contribution.amountFormatted}}
+  </pre>
+  <pre>individual / excluded person contributions = </pre>
+  <pre ng-repeat="oddPayment in oddPayments">
+    from: {{oddPayment.from.name}}, contribution: &#8364; {{oddPayment.what.amountFormatted}}
+    <pre ng-repeat="to in oddPayment.to">
+      to: {{to.name}}
+    </pre>
   </pre>
 
 </div>
