@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+
+<body ng-app="">
+<div ng-controller="Controller">
+  <form novalidate class="simple-form">
+    <!--Name: <input type="text" ng-model="person.name"/><br/>-->
+    <!--Contribution: <input type="text" ng-model="person.contribution"/><br/>-->
+
+    <button ng-disabled="step0" ng-click="initPersons()">Init</button>
+
+    <button ng-disabled="step1" ng-click="crunch()">Positions</button>
+
+    <button ng-disabled="step2" ng-click="adjustDeviatingPositions()">Adjustments</button>
+
+    <button ng-disabled="step3" ng-click="doPayments()">Payments</button>
+
+  </form>
+
+  <pre>payments = {{payments | json}}</pre>
+  <pre>adjustments = {{adjustments | json}}</pre>
+  <pre>positions = {{positions | json}}</pre>
+  <pre>persons = {{persons | json}}</pre>
+
+</div>
+
+<script src="js/library/angular.min.js"></script>
+<script src="js/library/lodash.min.js"></script>
+<script src="js/Money.js"></script>
+<script src="js/Person.js"></script>
+<script src="js/Payment.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>

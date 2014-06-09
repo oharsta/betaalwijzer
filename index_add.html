@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+
+<body ng-app="">
+<div ng-controller="Controller">
+  <form novalidate class="simple-form">
+    Name: <input type="text" ng-model="person.name"/><br/>
+    Contribution: <input type="text" ng-model="person.contribution"/><br/>
+
+    <button ng-click="add(person)">Add</button>
+
+    <button ng-click="crunch()">Crunch</button>
+
+    <button ng-click="doPayments()">Payments</button>
+
+  </form>
+
+  <pre>person = {{person | json}}</pre>
+  <pre>persons = {{persons | json}}</pre>
+  <pre>positions = {{positions | json}}</pre>
+  <pre>payments = {{payments | json}}</pre>
+
+</div>
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
+<script src="js/Money.js"></script>
+<script src="js/Person.js"></script>
+<script src="js/Payment.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
