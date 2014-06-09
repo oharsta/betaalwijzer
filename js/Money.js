@@ -17,9 +17,10 @@ function Money() {
     var cents = (split[1] === undefined) ? 0 : split[1].trim().lenght === 1 ? (Number(split[1]) * 10) : (Number(split[1].substring(0, 2)));
 
     this.amount = eurosInCents + cents;
-
+    this.amountFormatted = this.format();
   } else {
     this.amount = arguments[0];
+    this.amountFormatted = this.format();
   }
 
 }
@@ -46,5 +47,5 @@ Money.prototype.multiple = function (number) {
 };
 
 Money.prototype.format = function () {
-  return '€' + (this.amount / 100).toFixed(2)
+  return (this.amount / 100).toFixed(2)
 };

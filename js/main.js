@@ -79,7 +79,7 @@ function Controller($scope) {
   var singlePayment = function(creditor, debtors, amount) {
     _.each(debtors, function(debtor){
       debtor.adjustPosition(amount, true);
-      $scope.adjustments.push(new Payment(creditor.name, debtor.name, Math.abs(amount.amount)));
+      $scope.adjustments.push({ from: debtor.name, to: creditor.name, amount: Math.abs(amount.format())});
     });
     creditor.adjustPosition(amount, false);
   }
@@ -112,6 +112,7 @@ function Controller($scope) {
       return person.isPositionPositive();
     });
     loopPositions(creditors.pop(), creditors, debtors.pop(), debtors);
+    $scope.step3 = true;
   }
 
 

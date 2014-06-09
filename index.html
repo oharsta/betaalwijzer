@@ -19,10 +19,25 @@
 
   </form>
 
-  <pre>payments = {{payments | json}}</pre>
-  <pre>adjustments = {{adjustments | json}}</pre>
-  <pre>positions = {{positions | json}}</pre>
-  <pre>persons = {{persons | json}}</pre>
+  <pre>payments = </pre>
+  <pre ng-repeat="payment in payments">
+    creditor: {{payment.creditor}}, debtor: {{payment.debtor}}, amount: &#8364;{{payment.amount.amountFormatted}}
+  </pre>
+
+  <pre>adjustments = </pre>
+  <pre ng-repeat="adjustment in adjustments">
+    from: {{adjustment.from}}, to: {{adjustment.to}}, amount: &#8364;{{adjustment.amount}}
+  </pre>
+
+  <pre>positions = </pre>
+  <pre ng-repeat="person in persons" ng-show="step1">
+    name: {{person.name}}, position: &#8364; {{person.position.amountFormatted}}
+  </pre>
+
+  <pre>persons = </pre>
+  <pre ng-repeat="person in persons">
+    name: {{person.name}}, contribution: &#8364; {{person.contribution.amountFormatted}}
+  </pre>
 
 </div>
 
