@@ -44,7 +44,7 @@
   </pre>
   <pre>individual / excluded person contributions = </pre>
   <pre ng-repeat="oddPayment in oddPayments">
-    from: {{oddPayment.from.name}}, contribution: &#8364; {{oddPayment.what.amountFormatted}}
+    from: {{oddPayment.from.name}}, contribution: &#8364; {{oddPayment.total}}
     <pre ng-repeat="to in oddPayment.to">
       to: {{to.name}}
     </pre>

@@ -25,12 +25,12 @@ function Controller($scope) {
      * All but Guido (-60 / 7) Esther +60 - present twins
      * Astrid -12 Esther +12
      */
-    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Okke], what: new Money('50') });
-    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Astrid], what: new Money('12') });
+    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Okke], what: new Money('50'), total: 50.00 });
+    $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Astrid], what: new Money('12'), total: 12.00 });
     var allButGuido = _.filter($scope.persons, function (person) {
       return person.name !== 'Guido';
     });
-    $scope.oddPayments.push( { from: $scope.Esther, to: allButGuido, what: new Money((60 / allButGuido.length).toFixed(2)) });
+    $scope.oddPayments.push( { from: $scope.Esther, to: allButGuido, what: new Money((60 / allButGuido.length).toFixed(2)), total: 60.00 });
 
     $scope.step0 = true;
     $scope.step1 = false;
