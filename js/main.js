@@ -22,7 +22,7 @@ function Controller($scope) {
 
     /*
      * Okke -50 Esther +50
-     * All but Guido (-60 / 7) Esther +60
+     * All but Guido (-60 / 7) Esther +60 - present twins
      * Astrid -12 Esther +12
      */
     $scope.oddPayments.push({ from: $scope.Esther, to: [$scope.Okke], what: new Money('50') });
