@@ -111,12 +111,22 @@ function Controller($scope) {
   };
 
   $scope.doPayments = function () {
-    var debtors = $scope.persons.filter(function (person) {
+    var debtors = _.filter($scope.persons, function (person) {
       return person.isPositionNegative();
     });
-    var creditors = $scope.persons.filter(function (person) {
+
+    var creditors = _.filter($scope.persons, function (person) {
       return person.isPositionPositive();
     });
+
+    debtors = _.sortBy(debtors, function(person){
+      return person.position.amount;
+    });
+
+    creditors = _.sortBy(creditors, function(person){
+      return person.position.amount;
+    });
+
     loopPositions(creditors.pop(), creditors, debtors.pop(), debtors);
     $scope.step3 = true;
   }
